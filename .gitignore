@@ -4,3 +4,6 @@
 # VSCode
 .vscode/*
 !.vscode/extensions.json
+
+# Rust
+target/

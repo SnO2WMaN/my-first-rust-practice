@@ -2,6 +2,11 @@
   # main
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    rust-overlay = {
+      url = "github:oxalica/rust-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-utils.follows = "flake-utils";
+    };
     devshell = {
       url = "github:numtide/devshell";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -22,6 +27,7 @@
           inherit system;
           overlays = with inputs; [
             devshell.overlay
+            rust-overlay.overlays.default
           ];
         };
       in {
@@ -30,7 +36,9 @@
             treefmt
             alejandra
             direnv
-            cargo
+            (rust-bin.stable.latest.default.override {
+              extensions = ["rust-src"];
+            })
           ];
         };
       }
